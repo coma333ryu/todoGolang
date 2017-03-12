@@ -3,8 +3,8 @@
 *.a
 *.so
 
-*.idea
 *.iml
+.idea/
 
 
 # Folders
