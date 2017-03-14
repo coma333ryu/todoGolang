@@ -1,24 +1,24 @@
 package main
 
 import (
-	"todoGolang/database/sqlite3"
-
 	"fmt"
+	"todoGolang/constants"
+	"todoGolang/databases/sqlite3"
 
 	_ "github.com/mattn/go-sqlite3"
 )
 
 func main() {
-	db := sqlite3.CreateDatabase("./todo.db")
+
+	db := sqlite3.CreateDatabase(constants.SqliteFileInfo)
 	defer db.Close()
 
 	sqlite3.CreateTable(db)
 
-	rows, err := db.Query("SELECT * FROM tb_todo")
+	todoData := new(sqlite3.TodoData)
 
-	if err != nil {
-		panic(err)
-	}
+	result := todoData.GetTodoList(db)
 
-	fmt.Println(rows)
+	sqlite3.TodoData{id: 1}
+	fmt.Println("resultresultresult", result)
 }
