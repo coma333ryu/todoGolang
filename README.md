@@ -2,9 +2,9 @@
 
 ## Methods
 * GetTodoList : TODO 목록 조회
-* AddTodo : TODO  등록
-* UpdateTodo : TODO 상태 수정
-* DeleteTodo : TODO  삭제
+* AddTodoData : TODO  등록
+* UpdateTodoData : TODO 상태 수정
+* DeleteTodoData : TODO  삭제
 
 ## Databases
 * sqlite3 사용.
