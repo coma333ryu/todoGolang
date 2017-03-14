@@ -1,22 +1,21 @@
 package sqlite3
 
-import "database/sql"
+import (
+	"database/sql"
+	"fmt"
+)
 
 //TodoData : Todo List Data struct
 type TodoData struct {
 	id       int
-	title    string
-	doneYN   bool
+	Title    string
+	DoneYN   bool
 	createDt string
 	updateDt string
 }
 
 //TodoDataList : TodoData's slice
 type TodoDataList []TodoData
-
-func NewTodo() {
-
-}
 
 //CreateDatabase : create Sqlite3 Db file about filePath
 func CreateDatabase(filePath string) *sql.DB {
@@ -40,7 +39,7 @@ func CreateTable(db *sql.DB) {
 	procError(err)
 }
 
-func (todo *TodoData) GetTodoList(db *sql.DB) (todoList TodoDataList) {
+func GetTodoList(db *sql.DB) (todoList TodoDataList) {
 	getSQL := `
 		SELECT
 			id
@@ -55,17 +54,40 @@ func (todo *TodoData) GetTodoList(db *sql.DB) (todoList TodoDataList) {
 	procError(err)
 	defer rows.Close()
 
+	todoData := new(TodoData)
 	for rows.Next() {
-		rowsErr := rows.Scan(&todo.id, &todo.title, &todo.doneYN, &todo.createDt, &todo.updateDt)
+		rowsErr := rows.Scan(&todoData.id, &todoData.Title, &todoData.DoneYN, &todoData.createDt, &todoData.updateDt)
 		procError(rowsErr)
 
-		todoList = append(todoList, *todo)
+		todoList = append(todoList, *todoData)
 	}
 	return todoList
 }
 
-func (todo *TodoData) AddTodoData(db *sql.DB) {
+func AddTodoData(db *sql.DB, addParam *TodoData) {
+	addSQL := `
+		INSERT INTO tb_todo (
+			title
+			, doneYN
+			, createDt
+			, updateDt
+		) VALUES (
+			?
+			, ?
+			, strftime('%Y%m%d%H%M%S','now')
+			, strftime('%Y%m%d%H%M%S','now')
+		);
+	`
 
+	stmt, prepareErr := db.Prepare(addSQL)
+	procError(prepareErr)
+	res, execErr := stmt.Exec(addParam.Title, addParam.DoneYN)
+	defer stmt.Close()
+	procError(execErr)
+	id, insertResultErr := res.LastInsertId()
+	procError(insertResultErr)
+
+	fmt.Println("ididididid", id)
 }
 
 func UpdateTodoData() {

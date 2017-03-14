@@ -15,10 +15,15 @@ func main() {
 
 	sqlite3.CreateTable(db)
 
-	todoData := new(sqlite3.TodoData)
+	// todoData := new(sqlite3.TodoData)
 
-	result := todoData.GetTodoList(db)
+	todoParam := sqlite3.TodoData{
+		Title:  "aaa",
+		DoneYN: false,
+	}
+	sqlite3.AddTodoData(db, &todoParam)
 
-	sqlite3.TodoData{id: 1}
+	result := sqlite3.GetTodoList(db)
+
 	fmt.Println("resultresultresult", result)
 }
