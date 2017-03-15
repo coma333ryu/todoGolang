@@ -6,6 +6,7 @@
 *.iml
 .idea/
 
+*.db
 
 # Folders
 _obj
