@@ -32,13 +32,13 @@ func NewTodoData(idx string, title string, done bool) *TodoData {
 	}
 }
 
-//GetTodoTitle : get Todo Title
-func (todo *TodoData) GetTodoTitle() string {
+//TodoTitle : get Todo Title
+func (todo *TodoData) TodoTitle() string {
 	return todo.totoTitle
 }
 
-//GetTodoIdx : get Todo Idx
-func (todo *TodoData) GetTodoIdx() string {
+//TodoIdx : get Todo Idx
+func (todo *TodoData) TodoIdx() string {
 	return todo.todoIdx
 }
 

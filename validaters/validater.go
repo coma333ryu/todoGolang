@@ -8,15 +8,15 @@ import (
 //CheckParam : validate parameter
 func CheckParam(todoParam *sqlite3.TodoData, methodType string) error {
 	if methodType == "A" {
-		if todoParam.GetTodoTitle() == "" {
+		if todoParam.TodoTitle() == "" {
 			return errors.New("Title is nil")
 		}
 	} else if methodType == "U" {
-		if todoParam.GetTodoIdx() == "" {
+		if todoParam.TodoIdx() == "" {
 			return errors.New("Idx is nil")
 		}
 	} else if methodType == "D" {
-		if todoParam.GetTodoIdx() == "" {
+		if todoParam.TodoIdx() == "" {
 			return errors.New("Idx is nil")
 		}
 	} else {
