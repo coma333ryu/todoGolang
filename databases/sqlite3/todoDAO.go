@@ -1,31 +1,84 @@
 package sqlite3
 
-import (
-	"database/sql"
-	"fmt"
-)
+import "database/sql"
 
 //TodoData : Todo List Data struct
 type TodoData struct {
-	id       int
-	Title    string
-	DoneYN   bool
-	createDt string
-	updateDt string
+	todoIdx   string
+	totoTitle string
+	isDone    bool
+	createDt  string
+	updateDt  string
 }
 
 //TodoDataList : TodoData's slice
 type TodoDataList []TodoData
 
-//CreateDatabase : create Sqlite3 Db file about filePath
-func CreateDatabase(filePath string) *sql.DB {
+type todoServicer interface {
+	CreateDatabase(filePath string) *sql.DB
+	CreateTable(db *sql.DB)
+	GetTodoList(db *sql.DB) TodoDataList
+	AddTodoData(db *sql.DB, addParam *TodoData) bool
+	UpdateTodoData(db *sql.DB, todoParam *TodoData) bool
+	DeleteTodoData(db *sql.DB, todoParam *TodoData) bool
+}
+
+//NewTodoData : create TodoData struct
+func NewTodoData(idx string, title string, done bool) *TodoData {
+	return &TodoData{
+		todoIdx:   idx,
+		totoTitle: title,
+		isDone:    done,
+	}
+}
+
+//GetTodoTitle : get Todo Title
+func (todo *TodoData) GetTodoTitle() string {
+	return todo.totoTitle
+}
+
+//GetTodoIdx : get Todo Idx
+func (todo *TodoData) GetTodoIdx() string {
+	return todo.todoIdx
+}
+
+//CreateDatabase : create Sqlite3 Database file about filePath
+func (todo *TodoData) CreateDatabase(filePath string) *sql.DB {
+	return createDatabase(filePath)
+}
+
+//CreateTable : create table about tb_todo table
+func (todo *TodoData) CreateTable(db *sql.DB) {
+	createTable(db)
+}
+
+//GetTodoList : get TodoDataList from tb_todo table
+func (todo *TodoData) GetTodoList(db *sql.DB) TodoDataList {
+	return getTodoList(db)
+}
+
+//AddTodoData : insert TodoData into tb_todo table
+func (todo *TodoData) AddTodoData(db *sql.DB, todoParam *TodoData) bool {
+	return addTodoData(db, todoParam)
+}
+
+//UpdateTodoData : update TodoData's isdone on tb_todo table
+func (todo *TodoData) UpdateTodoData(db *sql.DB, todoParam *TodoData) bool {
+	return updateTodo(db, todoParam)
+}
+
+//DeleteTodoData : delete TodoData from tb_todo table
+func (todo *TodoData) DeleteTodoData(db *sql.DB, todoParam *TodoData) bool {
+	return deleteTodo(db, todoParam)
+}
+
+func createDatabase(filePath string) *sql.DB {
 	sqliteDB, err := sql.Open("sqlite3", filePath)
 	procError(err)
 	return sqliteDB
 }
 
-//CreateTable : create table about tb_todo
-func CreateTable(db *sql.DB) {
+func createTable(db *sql.DB) {
 	tableSQL := `
 	CREATE TABLE IF NOT EXISTS tb_todo (
         id integer primary key autoincrement, 
@@ -39,7 +92,7 @@ func CreateTable(db *sql.DB) {
 	procError(err)
 }
 
-func GetTodoList(db *sql.DB) (todoList TodoDataList) {
+func getTodoList(db *sql.DB) (todoList TodoDataList) {
 	getSQL := `
 		SELECT
 			id
@@ -56,7 +109,7 @@ func GetTodoList(db *sql.DB) (todoList TodoDataList) {
 
 	todoData := new(TodoData)
 	for rows.Next() {
-		rowsErr := rows.Scan(&todoData.id, &todoData.Title, &todoData.DoneYN, &todoData.createDt, &todoData.updateDt)
+		rowsErr := rows.Scan(&todoData.todoIdx, &todoData.totoTitle, &todoData.isDone, &todoData.createDt, &todoData.updateDt)
 		procError(rowsErr)
 
 		todoList = append(todoList, *todoData)
@@ -64,7 +117,7 @@ func GetTodoList(db *sql.DB) (todoList TodoDataList) {
 	return todoList
 }
 
-func AddTodoData(db *sql.DB, addParam *TodoData) {
+func addTodoData(db *sql.DB, addParam *TodoData) bool {
 	addSQL := `
 		INSERT INTO tb_todo (
 			title
@@ -78,24 +131,72 @@ func AddTodoData(db *sql.DB, addParam *TodoData) {
 			, strftime('%Y%m%d%H%M%S','now')
 		);
 	`
+	var bResult bool
 
 	stmt, prepareErr := db.Prepare(addSQL)
 	procError(prepareErr)
-	res, execErr := stmt.Exec(addParam.Title, addParam.DoneYN)
+
+	res, execErr := stmt.Exec(addParam.totoTitle, addParam.isDone)
 	defer stmt.Close()
 	procError(execErr)
+
 	id, insertResultErr := res.LastInsertId()
 	procError(insertResultErr)
 
-	fmt.Println("ididididid", id)
+	if id != 0 {
+		bResult = true
+	} else {
+		bResult = false
+	}
+
+	return bResult
 }
 
-func UpdateTodoData() {
+func updateTodo(db *sql.DB, todoParam *TodoData) bool {
+	var bResult bool
 
+	updateSQL := "UPDATE tb_todo SET doneYN = ? where id = ?;"
+
+	stmt, prepareErr := db.Prepare(updateSQL)
+	procError(prepareErr)
+
+	res, execErr := stmt.Exec(todoParam.isDone, todoParam.todoIdx)
+	procError(execErr)
+
+	defer stmt.Close()
+
+	affect, affErr := res.RowsAffected()
+	procError(affErr)
+
+	if affect != 0 {
+		bResult = true
+	} else {
+		bResult = false
+	}
+	return bResult
 }
 
-func DeleteTodoData() {
+func deleteTodo(db *sql.DB, todoParam *TodoData) bool {
+	var bResult bool
+	deleteSQL := "DELETE FROM tb_todo where id = ?;"
 
+	stmt, prepareErr := db.Prepare(deleteSQL)
+	procError(prepareErr)
+
+	res, execErr := stmt.Exec(todoParam.todoIdx)
+	procError(execErr)
+
+	defer stmt.Close()
+
+	affect, affErr := res.RowsAffected()
+	procError(affErr)
+
+	if affect != 0 {
+		bResult = true
+	} else {
+		bResult = false
+	}
+	return bResult
 }
 
 func procError(err error) {
