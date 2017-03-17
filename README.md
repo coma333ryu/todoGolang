@@ -27,4 +27,12 @@
             updateDt varchar(14) not null
         )
     ```
+
+## 외부 라이브러리
+* sqlite3 driver
+* gorilla/mux router
+```
+    go get github.com/mattn/go-sqlite3
+    go get github.com/gorilla/mux
+```
         
