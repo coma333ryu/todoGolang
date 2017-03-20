@@ -1,19 +1,35 @@
 package controller
 
 import (
+	"html/template"
 	"net/http"
-	"io/ioutil"
-	"fmt"
+	"path"
 )
 
-func Index(w http.ResponseWriter, req *http.Request) {
-	data, err := ioutil.ReadFile("public/index.html")
-	//data, err := ioutil.ReadFile("public/todo.html")
+func GetTodoList(res http.ResponseWriter, req *http.Request) {
+	view := path.Join("templates", "todo.html")
 
-	if err != nil {
-		fmt.Errorf("error reading index file : %s", err)
-	}
-	w.Header().Add("Content Type", " text/html")
-	w.WriteHeader(200)
-	w.Write(data)
+	todoTemplates := template.Must(template.ParseFiles(view))
+	todoTemplates.Execute(res, "")
+}
+
+func AddTodoData(res http.ResponseWriter, req *http.Request) {
+	view := path.Join("templates", "todo.html")
+
+	todoTemplates := template.Must(template.ParseFiles(view))
+	todoTemplates.Execute(res, "")
+}
+
+func UpdateTodoData(res http.ResponseWriter, req *http.Request) {
+	view := path.Join("templates", "todo.html")
+
+	todoTemplates := template.Must(template.ParseFiles(view))
+	todoTemplates.Execute(res, "")
+}
+
+func DeleteTodoData(res http.ResponseWriter, req *http.Request) {
+	view := path.Join("templates", "todo.html")
+
+	todoTemplates := template.Must(template.ParseFiles(view))
+	todoTemplates.Execute(res, "")
 }
