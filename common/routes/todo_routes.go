@@ -19,12 +19,29 @@ var routeInfo = TodoRoutes{
 	TodoRoute{
 		method:      "GET",
 		path:        "/",
-		handlerFunc: controller.Index,
+		handlerFunc: controller.GetTodoList,
+	},
+	TodoRoute{
+		method:      "POST",
+		path:        "/add",
+		handlerFunc: controller.AddTodoData,
+	},
+	TodoRoute{
+		method:      "DELETE",
+		path:        "/delete/{todoIdx}",
+		handlerFunc: controller.DeleteTodoData,
+	},
+	TodoRoute{
+		method:      "PUT",
+		path:        "/update/{todoIdx}",
+		handlerFunc: controller.UpdateTodoData,
 	},
 }
 
 func NewRouter() *mux.Router {
 	router := mux.NewRouter().StrictSlash(true)
+
+	router.PathPrefix("/web").Handler(http.StripPrefix("/web/", http.FileServer(http.Dir("web/"))))
 
 	for _, route := range routeInfo {
 		router.Methods(route.method).
