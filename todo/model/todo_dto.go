@@ -9,6 +9,9 @@ type TodoData struct {
 	updateDt  string
 }
 
+//TodoDataList : TodoData's slice
+type TodoDataList []TodoData
+
 //NewTodoData : create TodoData struct
 func NewTodoData(idx string, title string, done bool) *TodoData {
 	return &TodoData{
