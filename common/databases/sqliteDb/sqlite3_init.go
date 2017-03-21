@@ -1,8 +1,10 @@
-package sqlite3
+package sqliteDb
 
 import (
 	"database/sql"
 	"todoGolang/common/exceptions"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 //CreateDatabase : create Sqlite3 Database file about filePath
