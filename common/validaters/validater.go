@@ -11,11 +11,7 @@ func CheckParam(todoParam *model.TodoData, methodType string) error {
 		if todoParam.TodoTitle() == "" {
 			return errors.New("Title is nil")
 		}
-	} else if methodType == "U" {
-		if todoParam.TodoIdx() == "" {
-			return errors.New("Idx is nil")
-		}
-	} else if methodType == "D" {
+	} else if methodType == "U" || methodType == "D" {
 		if todoParam.TodoIdx() == "" {
 			return errors.New("Idx is nil")
 		}
