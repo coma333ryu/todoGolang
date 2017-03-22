@@ -2,79 +2,62 @@
 <html>
     <head>
         <link href="/web/assets/css/main.css" rel="stylesheet">
+        <script src="/web/assets/js/jquery-3.2.0.min.js"></script>
     </head>
 <body>
 
+<form id="todoForm" method="post" action="">
+    <input type="hidden" id="todoIdx" name="todoIdx" value="" />
+    <input type="hidden" id="isDone" name="isDone" value="" />
 <div id="myDIV" class="header">
     <h2 style="margin:5px">My To Do List</h2>
-    <input type="text" id="myInput" placeholder="Title...">
-    <span onclick="newElement()" class="addBtn">Add</span>
+    <input type="text" id="todoTitle" name="todoTitle" value="" placeholder="Title...">
+    <input type="text" style="display: none;" />
+    <span onclick="fnAddTodo()" class="addBtn">Add</span>
 </div>
+</form>
 
 <ul id="myUL">
-    <li>Hit the gym</li>
-    <li class="checked">Pay bills</li>
-    <li>Meet George</li>
-    <li>Buy eggs</li>
-    <li>Read a book</li>
-    <li>Organize office</li>
+    {{range .}}
+    <li {{if .TodoIsDone}} class="checked" {{end}}>
+        <a href="javascript:fnUpdateTodo('{{.TodoIdx}}','{{.TodoIsDone}}')">{{.TodoTitle}}</a>
+        <span class="close" onclick="fnDeleteTodo('{{.TodoIdx}}')">×</span>
+    </li>
+    {{end}}
 </ul>
 
 <script>
-    // Create a "close" button and append it to each list item
-    var myNodelist = document.getElementsByTagName("LI");
-    var i;
-    for (i = 0; i < myNodelist.length; i++) {
-        var span = document.createElement("SPAN");
-        var txt = document.createTextNode("\u00D7");
-        span.className = "close";
-        span.appendChild(txt);
-        myNodelist[i].appendChild(span);
+    $( document ).ready(function() {
+        console.log( "ready!" );
+    });
+    
+    function fnDeleteTodo(selectIdx) {
+        $("#todoIdx").val(selectIdx);
+        $("#todoForm").attr("action", "/delete");
+        $('#todoForm').submit();
     }
 
-    // Click on a close button to hide the current list item
-    var close = document.getElementsByClassName("close");
-    var i;
-    for (i = 0; i < close.length; i++) {
-        close[i].onclick = function() {
-            var div = this.parentElement;
-            div.style.display = "none";
+    function fnUpdateTodo(selectIdx,curIsDone) {
+        $("#todoIdx").val(selectIdx);
+        
+        if (curIsDone == "true") {
+            $("#isDone").val("false");
+        }else {
+            $("#isDone").val("true");
         }
+        
+        $("#todoForm").attr("action", "/update");
+        $('#todoForm').submit();
     }
 
-    // Add a "checked" symbol when clicking on a list item
-    var list = document.querySelector('ul');
-    list.addEventListener('click', function(ev) {
-        if (ev.target.tagName === 'LI') {
-            ev.target.classList.toggle('checked');
+    function fnAddTodo() {
+        if ($("#todoTitle").val() == "") {
+            alert("Title is empty ");
+            return;
         }
-    }, false);
-
-    // Create a new list item when clicking on the "Add" button
-    function newElement() {
-        var li = document.createElement("li");
-        var inputValue = document.getElementById("myInput").value;
-        var t = document.createTextNode(inputValue);
-        li.appendChild(t);
-        if (inputValue === '') {
-            alert("You must write something!");
-        } else {
-            document.getElementById("myUL").appendChild(li);
-        }
-        document.getElementById("myInput").value = "";
-
-        var span = document.createElement("SPAN");
-        var txt = document.createTextNode("\u00D7");
-        span.className = "close";
-        span.appendChild(txt);
-        li.appendChild(span);
-
-        for (i = 0; i < close.length; i++) {
-            close[i].onclick = function() {
-                var div = this.parentElement;
-                div.style.display = "none";
-            }
-        }
+        
+        $("#todoForm").attr("action", "/add");
+        $('#todoForm').submit();
     }
 </script>
 
