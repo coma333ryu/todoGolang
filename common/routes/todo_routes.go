@@ -27,13 +27,13 @@ var routeInfo = TodoRoutes{
 		handlerFunc: controller.AddTodoData,
 	},
 	TodoRoute{
-		method:      "DELETE",
-		path:        "/delete/{todoIdx}",
+		method:      "POST",
+		path:        "/delete",
 		handlerFunc: controller.DeleteTodoData,
 	},
 	TodoRoute{
-		method:      "PUT",
-		path:        "/update/{todoIdx}",
+		method:      "POST",
+		path:        "/update",
 		handlerFunc: controller.UpdateTodoData,
 	},
 }
