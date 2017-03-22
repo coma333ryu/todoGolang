@@ -3,7 +3,7 @@ package model
 //TodoData : Todo List Data struct
 type TodoData struct {
 	todoIdx   string
-	totoTitle string
+	todoTitle string
 	isDone    bool
 	createDt  string
 	updateDt  string
@@ -16,7 +16,7 @@ type TodoDataList []TodoData
 func NewTodoData(idx string, title string, done bool) *TodoData {
 	return &TodoData{
 		todoIdx:   idx,
-		totoTitle: title,
+		todoTitle: title,
 		isDone:    done,
 	}
 }
@@ -25,7 +25,7 @@ func NewTodoData(idx string, title string, done bool) *TodoData {
 func ResultTodo(idx string, title string, done bool, createDt string, updateDt string) *TodoData {
 	return &TodoData{
 		todoIdx:   idx,
-		totoTitle: title,
+		todoTitle: title,
 		isDone:    done,
 		createDt:  createDt,
 		updateDt:  updateDt,
@@ -39,7 +39,7 @@ func (todo *TodoData) TodoIdx() string {
 
 //TodoTitle : get totoTitle
 func (todo *TodoData) TodoTitle() string {
-	return todo.totoTitle
+	return todo.todoTitle
 }
 
 //TodoIsDone : get isDone
