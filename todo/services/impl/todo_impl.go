@@ -48,7 +48,7 @@ func getTodoList(db *sql.DB) (todoList model.TodoDataList) {
 			, doneYN
 			, createDt
 			, updateDt
-		FROM tb_todo;
+		FROM tb_todo order by id desc;
 	`
 
 	rows, err := db.Query(getSQL)
