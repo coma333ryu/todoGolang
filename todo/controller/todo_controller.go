@@ -30,7 +30,6 @@ func GetTodoList(res http.ResponseWriter, req *http.Request) {
 	todoService := new(impl.TodoDao)
 
 	result := todoService.GetTodoList()
-	// controllerLog.Println(result)
 
 	todoTemplates := template.Must(template.ParseFiles(view))
 	todoTemplates.Execute(res, result)
