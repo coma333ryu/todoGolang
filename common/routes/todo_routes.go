@@ -36,6 +36,26 @@ var routeInfo = TodoRoutes{
 		path:        "/update",
 		handlerFunc: controller.UpdateTodoData,
 	},
+	TodoRoute{
+		method:      "GET",
+		path:        "/data",
+		handlerFunc: controller.GetTodoList,
+	},
+	TodoRoute{
+		method:      "POST",
+		path:        "/data/add",
+		handlerFunc: controller.GetTodoList,
+	},
+	TodoRoute{
+		method:      "POST",
+		path:        "/data/update",
+		handlerFunc: controller.GetTodoList,
+	},
+	TodoRoute{
+		method:      "POST",
+		path:        "/data/delete",
+		handlerFunc: controller.GetTodoList,
+	},
 }
 
 func NewRouter() *mux.Router {
