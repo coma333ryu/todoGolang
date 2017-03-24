@@ -12,6 +12,8 @@ import (
 	"todoGolang/common/validaters"
 	"todoGolang/todo/model"
 	"todoGolang/todo/services/impl"
+	"encoding/json"
+	"fmt"
 )
 
 var (
@@ -27,12 +29,23 @@ func init() {
 func GetTodoList(res http.ResponseWriter, req *http.Request) {
 	view := path.Join("templates", "todo.html")
 
-	todoService := new(impl.TodoDao)
-
 	result := todoService.GetTodoList()
 
 	todoTemplates := template.Must(template.ParseFiles(view))
 	todoTemplates.Execute(res, result)
+}
+
+func GetTodoListJson(res http.ResponseWriter, req *http.Request) {
+	result := todoService.GetTodoList()
+	fmt.Println("result ========> ",result)
+
+	//res.Header().Set("Content-Type", "application/json")
+	//json.NewEncoder(res).Encode(result)
+	b, err := json.Marshal(result)
+	if err != nil {
+		fmt.Println("json err:", err)
+	}
+	fmt.Println(string(b))
 }
 
 func AddTodoData(res http.ResponseWriter, req *http.Request) {

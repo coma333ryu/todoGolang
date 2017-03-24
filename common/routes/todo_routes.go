@@ -38,8 +38,8 @@ var routeInfo = TodoRoutes{
 	},
 	TodoRoute{
 		method:      "GET",
-		path:        "/data",
-		handlerFunc: controller.GetTodoList,
+		path:        "/data/list",
+		handlerFunc: controller.GetTodoListJson,
 	},
 	TodoRoute{
 		method:      "POST",
