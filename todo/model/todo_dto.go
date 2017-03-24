@@ -2,11 +2,11 @@ package model
 
 //TodoData : Todo List Data struct
 type TodoData struct {
-	todoIdx   string
-	todoTitle string
-	isDone    bool
-	createDt  string
-	updateDt  string
+	todoIdx   string `json:"todoIdx"`
+	todoTitle string	`json:"todoTitle"`
+	isDone    bool	`json:"isDone"`
+	createDt  string `json:"createDt"`
+	updateDt  string `json:"updateDt"`
 }
 
 //TodoDataList : TodoData's slice
