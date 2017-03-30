@@ -44,17 +44,17 @@ var routeInfo = TodoRoutes{
 	TodoRoute{
 		method:      "POST",
 		path:        "/data/add",
-		handlerFunc: controller.GetTodoList,
+		handlerFunc: controller.AddTodoJson,
 	},
 	TodoRoute{
 		method:      "POST",
 		path:        "/data/update",
-		handlerFunc: controller.GetTodoList,
+		handlerFunc: controller.UpdateTodoJson,
 	},
 	TodoRoute{
 		method:      "POST",
 		path:        "/data/delete",
-		handlerFunc: controller.GetTodoList,
+		handlerFunc: controller.DeleteTodoJson,
 	},
 }
 
