@@ -17,12 +17,16 @@ func init() {
 }
 
 type TodoDao struct {
-	services.TodoServicer
+	services.TodoService
 }
 
 //GetTodoList : get TodoDataList from tb_todo table
 func (todoDao *TodoDao) GetTodoList() model.TodoDataList {
 	return getTodoList(sqlite3Db)
+}
+
+func (todoDao *TodoDao) GetTodoListJson() model.TodoJsonList{
+	return getTodoListJson(sqlite3Db)
 }
 
 //AddTodoData : insert TodoData into tb_todo table
@@ -70,6 +74,31 @@ func getTodoList(db *sql.DB) (todoList model.TodoDataList) {
 		todoList = append(todoList, *todoResul)
 	}
 	return todoList
+}
+
+func getTodoListJson(db *sql.DB) (todoJsonList model.TodoJsonList) {
+	getSQL := `
+		SELECT
+			id
+			, title
+			, doneYN
+			, createDt
+			, updateDt
+		FROM tb_todo order by id desc;
+	`
+
+	rows, err := db.Query(getSQL)
+	exceptions.ProcError(err)
+	defer rows.Close()
+
+	for rows.Next() {
+		todoJson := new(model.TodoJson)
+		rowsErr := rows.Scan(&todoJson.TodoIdx, &todoJson.TodoTitle, &todoJson.IsDone, &todoJson.CreateDt, &todoJson.UpdateDt)
+		exceptions.ProcError(rowsErr)
+
+		todoJsonList = append(todoJsonList, *todoJson)
+	}
+	return todoJsonList
 }
 
 func addTodoData(db *sql.DB, addParam *model.TodoData) bool {
