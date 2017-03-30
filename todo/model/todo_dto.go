@@ -1,16 +1,30 @@
 package model
 
-//TodoData : Todo List Data struct
+
+
+//TodoData : Todo data struct
 type TodoData struct {
-	todoIdx   string `json:"todoIdx"`
-	todoTitle string	`json:"todoTitle"`
-	isDone    bool	`json:"isDone"`
-	createDt  string `json:"createDt"`
-	updateDt  string `json:"updateDt"`
+	todoIdx   string
+	todoTitle string
+	isDone    bool
+	createDt  string
+	updateDt  string
+}
+
+//TodoJson : Todo data struct for json
+type TodoJson struct {
+	TodoIdx   string `json:"todo_idx"`
+	TodoTitle string	`json:"todo_title"`
+	IsDone    bool	`json:"is_done"`
+	CreateDt  string `json:"create_dt"`
+	UpdateDt  string `json:"update_dt"`
 }
 
 //TodoDataList : TodoData's slice
 type TodoDataList []TodoData
+
+//TodoJsonList : TodoJson's slice
+type TodoJsonList []TodoJson
 
 //NewTodoData : create TodoData struct
 func NewTodoData(idx string, title string, done bool) *TodoData {
