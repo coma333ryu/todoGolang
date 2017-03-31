@@ -18,14 +18,13 @@
     * Create SQL
 
     ```
-        
-        CREATE TABLE tb_todo (
+        CREATE TABLE IF NOT EXISTS tb_todo (
             id integer primary key autoincrement, 
             title text not null,
             doneYN boolean not null,
             createDt varchar(14) not null,
             updateDt varchar(14) not null
-        )
+        );
     ```
 
 ## 외부 라이브러리
