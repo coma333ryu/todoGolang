@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"encoding/json"
 	"errors"
 	"html/template"
 	"log"
@@ -12,7 +13,6 @@ import (
 	"todoGolang/common/validaters"
 	"todoGolang/todo/model"
 	"todoGolang/todo/services/impl"
-	"encoding/json"
 )
 
 var (
@@ -107,7 +107,7 @@ func DeleteTodoData(res http.ResponseWriter, req *http.Request) {
 func GetTodoListJson(res http.ResponseWriter, req *http.Request) {
 	result := todoService.GetTodoListJson()
 
-	jsonList , _ := json.Marshal(result)
+	jsonList, _ := json.Marshal(result)
 
 	res.Header().Set("Content-Type", "application/json")
 	res.Write(jsonList)
