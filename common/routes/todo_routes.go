@@ -59,6 +59,7 @@ var routeInfo = TodoRoutes{
 }
 
 func NewRouter() *mux.Router {
+	//https://godoc.org/github.com/gorilla/mux#Router.StrictSlash
 	router := mux.NewRouter().StrictSlash(true)
 
 	router.PathPrefix("/web").Handler(http.StripPrefix("/web/", http.FileServer(http.Dir("web/"))))
