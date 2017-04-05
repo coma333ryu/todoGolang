@@ -26,6 +26,7 @@ func init() {
 }
 
 func GetTodoList(res http.ResponseWriter, req *http.Request) {
+	// https://golang.org/pkg/text/template/ <== template document
 	view := path.Join("templates", "todo.html")
 
 	result := todoService.GetTodoList()
